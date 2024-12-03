@@ -1,5 +1,7 @@
 local lp = game.Players.LocalPlayer
-local mobs = {"Ice Walker", "Ice Elemental", "Snowhorse"}
+local char = lp.Character
+
+local mobs = {"Ra'thae the Ice King", "Ice Walker", "Ice Elemental", "Snowhorse"}
 
 local function getNPC() 
     local dist, closestMob = math.huge, nil
@@ -8,7 +10,12 @@ local function getNPC()
         -- Check if the mob's name is in the mobs table
         if table.find(mobs, mob.Name) then
             -- Correct the resizing of the NPC's HumanoidRootPart (optional)
-            mob.HumanoidRootPart.Size = Vector3.new(2, 55, 5)
+			if mob.Name == "Ra'thae the Ice King" then
+				mob.HumanoidRootPart.Size = Vector3.new(2, 65, 2)
+			else
+			    mob.HumanoidRootPart.Size = Vector3.new(2, 30, 2)
+			end
+
             mob.HumanoidRootPart.CanCollide = false
             -- Calculate the distance between the player and the mob
             local mag = (lp.Character.HumanoidRootPart.Position - mob.HumanoidRootPart.Position).magnitude
@@ -57,10 +64,15 @@ end
 getgenv().bandit = true  -- Toggle
 while getgenv().bandit do 
     task.wait()  -- This ensures the loop is regularly checking for changes
-    pcall(function()
+	local succ, err = pcall(function()
         local npc = getNPC()
-        if npc then
-            moveto(npc.HumanoidRootPart.CFrame + Vector3.new(0, 20, 0), 29)
+        if npc.Name == "Ra'thae the Ice King" then
+            moveto(npc.HumanoidRootPart.CFrame + Vector3.new(0, 50, 0), 31)
+		else
+			moveto(npc.HumanoidRootPart.CFrame + Vector3.new(0, 15, 0), 31)
         end
     end)
+	if err then
+		print(err)
+	end
 end
